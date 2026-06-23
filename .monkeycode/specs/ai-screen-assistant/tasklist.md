@@ -33,12 +33,12 @@
 - [ ] 6. 检查点 - 确认数据库和 DataStore 操作通过测试
 
 - [ ] 7. 实现网络层 —— LLM API 接入 (R2, R8)
-  - [ ] 7.1 实现 `LLMApiService`，封装 OkHttp 客户端，构造 JSON POST 请求（SerializedUITree JSON + 用户 prompt + 对话上下文），使用 Chat Completions 兼容格式 —— 满足 R2 JSON 界面数据发送
-  - [ ] 7.2 设计并实现 System Prompt 模板，告知 LLM 其角色为 Android 操作助手，约定输出格式为 AnalysisResult JSON —— 满足 R2 分析格式
-  - [ ] 7.3 实现 `LLMApiService` 的响应解析，将 LLM 返回 JSON 映射为 `AnalysisResult`，处理 4xx/5xx 错误 —— 满足 R2 错误处理
-  - [ ] 7.4 实现网络状态监听工具类 `NetworkMonitor`，使用 ConnectivityManager 监听网络变化 —— 满足 R10 离线检测
-  - [ ] 7.5 为 LLMApiService 请求构造和 System Prompt 编写单元测试（mock OkHttp）
-  - [ ] 7.6 为 AnalysisResult 响应解析编写单元测试
+  - [x] 7.1 实现 `LLMApiService`，封装 OkHttp 客户端，构造 JSON POST 请求（SerializedUITree JSON + 用户 prompt + 对话上下文），使用 Chat Completions 兼容格式 —— 满足 R2 JSON 界面数据发送
+  - [x] 7.2 设计并实现 System Prompt 模板，告知 LLM 其角色为 Android 操作助手，约定输出格式为 AnalysisResult JSON —— 满足 R2 分析格式
+  - [x] 7.3 实现 `LLMApiService` 的响应解析，将 LLM 返回 JSON 映射为 `AnalysisResult`，处理 4xx/5xx 错误 —— 满足 R2 错误处理
+  - [x] 7.4 实现网络状态监听工具类 `NetworkMonitor`，使用 ConnectivityManager 监听网络变化 —— 满足 R10 离线检测
+  - [x] 7.5 为 LLMApiService 请求构造和 System Prompt 编写单元测试（mock OkHttp）
+  - [x] 7.6 为 AnalysisResult 响应解析编写单元测试
 
 - [ ] 8. 实现 Repository 层 (R2, R8, R9, R10)
   - [ ] 8.1 实现 `LLMRepository`，组合 `LLMApiService` + `NetworkMonitor`，封装请求队列和重试逻辑 —— 满足 R2、R10
