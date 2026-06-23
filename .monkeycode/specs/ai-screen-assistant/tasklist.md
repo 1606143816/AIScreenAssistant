@@ -41,11 +41,11 @@
   - [x] 7.6 为 AnalysisResult 响应解析编写单元测试
 
 - [ ] 8. 实现 Repository 层 (R2, R8, R9, R10)
-  - [ ] 8.1 实现 `LLMRepository`，组合 `LLMApiService` + `NetworkMonitor`，封装请求队列和重试逻辑 —— 满足 R2、R10
-  - [ ] 8.2 实现 `ConversationRepository`，封装 `ConversationDao` + `MessageDao`，对外暴露 Flow<List<ConversationSummary>> —— 满足 R9
-  - [ ] 8.3 实现 `SettingsRepository`，封装 `SettingsDataStore`，提供 LLMConfig 和 OperationMode 的读写 Flow —— 满足 R8、R11
-  - [ ] 8.4 为 LLMRepository 队列管理和重试逻辑编写单元测试
-  - [ ] 8.5 为 ConversationRepository CRUD 编写单元测试
+  - [x] 8.1 实现 `LLMRepository`，组合 `LLMApiService` + `NetworkMonitor`，封装请求队列和重试逻辑 —— 满足 R2、R10
+  - [x] 8.2 实现 `ConversationRepository`，封装 `ConversationDao` + `MessageDao`，对外暴露 Flow<List<ConversationSummary>> —— 满足 R9
+  - [x] 8.3 实现 `SettingsRepository`，封装 `SettingsDataStore`，提供 LLMConfig 和 OperationMode 的读写 Flow —— 满足 R8、R11
+  - [x] 8.4 为 LLMRepository 队列管理和重试逻辑编写单元测试
+  - [x] 8.5 为 ConversationRepository CRUD 编写单元测试
 
 - [ ] 9. 实现 Domain 层 —— Use Cases (R1, R2, R3, R4, R5, R7, R8, R9, R11)
   - [x] 9.1 实现 `ReadUITreeUseCase`，通过 AIAccessibilityService 获取当前界面 UI 树，调用 UITreeSerializer 序列化 —— 满足 R1
@@ -62,11 +62,11 @@
 - [ ] 10. 检查点 - 确认所有 Use Case 覆盖需求
 
 - [ ] 11. 实现 AccessibilityService (R1, R4, R5, R7)
-  - [ ] 11.1 创建 `AIAccessibilityService` 继承 AccessibilityService，注册 `accessibility_service_config.xml`，监听 TYPE_WINDOW_STATE_CHANGED 和 TYPE_WINDOW_CONTENT_CHANGED 事件 —— 满足 R1、R4
-  - [ ] 11.2 实现 UI 树读取功能 —— `readUITree()` 方法，通过 rootInActiveWindow 获取根节点，递归遍历提取元素属性 —— 满足 R1
-  - [ ] 11.3 实现 `performAction(Action)` 方法，根据 Action 类型（Click/InputText/Swipe/Scroll/Back）调用 AccessibilityNodeInfo 对应方法，使用 elementIndex 定位元素 —— 满足 R4 操作类型
-  - [ ] 11.4 实现操作执行结果回调机制，通过 SharedFlow 报告每步操作成功/失败 —— 满足 R4 进度反馈
-  - [ ] 11.5 实现敏感操作检测逻辑，识别支付/删除对话框并触发二次确认回调 —— 满足 R7 敏感操作确认
+  - [x] 11.1 创建 `AIAccessibilityService` 继承 AccessibilityService，注册 `accessibility_service_config.xml`，监听 TYPE_WINDOW_STATE_CHANGED 和 TYPE_WINDOW_CONTENT_CHANGED 事件 —— 满足 R1、R4
+  - [x] 11.2 实现 UI 树读取功能 —— `readUITree()` 方法，通过 rootInActiveWindow 获取根节点，递归遍历提取元素属性 —— 满足 R1
+  - [x] 11.3 实现 `performAction(Action)` 方法，根据 Action 类型（Click/InputText/Swipe/Scroll/Back）调用 AccessibilityNodeInfo 对应方法，使用 elementIndex 定位元素 —— 满足 R4 操作类型
+  - [x] 11.4 实现操作执行结果回调机制，通过 SharedFlow 报告每步操作成功/失败 —— 满足 R4 进度反馈
+  - [x] 11.5 实现敏感操作检测逻辑，识别支付/删除对话框并触发二次确认回调 —— 满足 R7 敏感操作确认
 
 - [ ] 12. 实现悬浮球服务 (R6)
   - [ ] 12.1 实现 `OverlayService`，通过 WindowManager 在系统层级添加可拖拽悬浮球 View —— 满足 R6
