@@ -149,21 +149,35 @@ data class SerializedUITree(
 )
 
 data class UIElement(
-    val id: String?,                 // resource-id
-    val type: String,                // 控件类名
+    val index: Int,                  // 在 elements 列表中的下标
+    val resourceId: String?,         // resource-id
+    val className: String,           // 控件类名 (e.g. "android.widget.Button")
     val text: String?,               // 可见文本
     val contentDescription: String?, // 无障碍描述
     val hint: String?,               // 提示文字
-    val bounds: Rect,                // 边界坐标
-    val isClickable: Boolean,
-    val isEditable: Boolean,
-    val isPassword: Boolean,         // 是否为密码字段
-    val isChecked: Boolean?,
-    val isScrollable: Boolean,
-    val isFocused: Boolean,
-    val childCount: Int,
-    val depth: Int                   // 层级深度
+    val bounds: SerializableRect,    // 可序列化的边界坐标
+    val isClickable: Boolean = false,
+    val isLongClickable: Boolean = false,
+    val isEditable: Boolean = false,
+    val isPassword: Boolean = false,  // 密码字段标识 (安全过滤关键)
+    val isChecked: Boolean? = null,
+    val isScrollable: Boolean = false,
+    val isFocused: Boolean = false,
+    val isEnabled: Boolean = true,
+    val childCount: Int = 0,
+    val depth: Int = 0
 )
+
+data class SerializableRect(
+    val left: Int, val top: Int, val right: Int, val bottom: Int
+) {
+    val width: Int get() = right - left
+    val height: Int get() = bottom - top
+    val centerX: Int get() = left + width / 2
+    val centerY: Int get() = top + height / 2
+    companion object { fun fromRect(rect: android.graphics.Rect): SerializableRect }
+    fun toRect(): android.graphics.Rect
+}
 ```
 
 ### AnalysisResult
@@ -187,6 +201,7 @@ data class UIElementReference(
 
 ```kotlin
 sealed class Action {
+    abstract val type: String
     data class Click(val elementIndex: Int) : Action()
     data class LongClick(val elementIndex: Int) : Action()
     data class InputText(val elementIndex: Int, val text: String) : Action()
@@ -200,6 +215,14 @@ sealed class Action {
     data class ScrollBackward(val elementIndex: Int) : Action()
     data class OpenApp(val packageName: String) : Action()
 }
+
+// 操作执行结果
+sealed class ActionResult {
+    data class Success(val actionIndex: Int, val message: String = "") : ActionResult()
+    data class Failure(val actionIndex: Int, val error: String) : ActionResult()
+    data class Skipped(val actionIndex: Int, val reason: String) : ActionResult()
+    data class NeedsConfirmation(val actionIndex: Int, val prompt: String) : ActionResult()
+}
 ```
 
 ### Conversation & Message
@@ -210,8 +233,17 @@ data class Conversation(
     val title: String,
     val createdAt: Long,
     val updatedAt: Long,
-    val messages: List<Message>,
-    val uiTreeRecords: List<UITreeRecord>
+    val messages: List<Message> = emptyList(),
+    val uiTreeRecords: List<UITreeRecord> = emptyList()
+)
+
+data class ConversationSummary(
+    val id: String,
+    val title: String,
+    val createdAt: Long,
+    val updatedAt: Long,
+    val lastMessage: String?,
+    val lastAppPackage: String?
 )
 
 data class Message(
@@ -219,6 +251,15 @@ data class Message(
     val role: MessageRole,
     val content: String,
     val analysisResult: AnalysisResult? = null,
+    val timestamp: Long
+)
+
+data class UITreeRecord(
+    val id: String,
+    val conversationId: String,
+    val serializedTree: String,
+    val packageName: String,
+    val activityName: String?,
     val timestamp: Long
 )
 
@@ -234,6 +275,15 @@ data class LLMConfig(
     val modelName: String,
     val maxTokens: Int = 4096,
     val temperature: Float = 0.7f
+) {
+    val chatCompletionsUrl: String get() = baseUrl.trimEnd('/') + "/v1/chat/completions"
+    val isValid: Boolean get() = baseUrl.isNotBlank() && apiKey.isNotBlank() && modelName.isNotBlank()
+}
+
+data class ValidationResult(
+    val success: Boolean,
+    val message: String,
+    val modelName: String? = null
 )
 
 enum class OperationMode {
