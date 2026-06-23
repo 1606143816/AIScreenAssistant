@@ -23,12 +23,12 @@
   - [x] 4.3 为 UITreeSerializer 序列化完整性编写单元测试
 
 - [ ] 5. 实现数据持久化层 (R9, R8, R11)
-  - [ ] 5.1 编写 Room Entity 类 —— `ConversationEntity`, `MessageEntity`, `UITreeRecordEntity`，含外键关系和索引 —— 满足 R9
-  - [ ] 5.2 编写 Room DAO 接口 —— `ConversationDao`（增删查 + 按时间倒序分页）、`MessageDao`（按 conversationId 查询）—— 满足 R9
-  - [ ] 5.3 编写 `AppDatabase` Room 数据库类，声明所有 Entity 和 DAO，配置 migration 策略 —— 满足 R9
-  - [ ] 5.4 实现 `SettingsDataStore` 用于 LLMConfig 和 OperationMode 的键值持久化 —— 满足 R8、R11
-  - [ ] 5.5 为 ConversationDao 查询编写单元测试
-  - [ ] 5.6 为 SettingsDataStore 读写编写单元测试
+  - [x] 5.1 编写 Room Entity 类 —— `ConversationEntity`, `MessageEntity`, `UITreeRecordEntity`，含外键关系和索引 —— 满足 R9
+  - [x] 5.2 编写 Room DAO 接口 —— `ConversationDao`（增删查 + 按时间倒序分页）、`MessageDao`（按 conversationId 查询）—— 满足 R9
+  - [x] 5.3 编写 `AppDatabase` Room 数据库类，声明所有 Entity 和 DAO，配置 migration 策略 —— 满足 R9
+  - [x] 5.4 实现 `SettingsDataStore` 用于 LLMConfig 和 OperationMode 的键值持久化 —— 满足 R8、R11
+  - [x] 5.5 为 ConversationDao 查询编写单元测试
+  - [x] 5.6 为 SettingsDataStore 读写编写单元测试
 
 - [ ] 6. 检查点 - 确认数据库和 DataStore 操作通过测试
 
