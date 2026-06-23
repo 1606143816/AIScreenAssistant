@@ -18,9 +18,9 @@
   - [x] 3.7 为 AnalysisResult JSON 反序列化编写单元测试
 
 - [ ] 4. 实现 UI 树序列化工具 (R1)
-  - [ ] 4.1 实现 `UITreeSerializer`，从 AccessibilityNodeInfo 递归遍历提取为 `UIElement` 列表，过滤无意义的装饰节点 —— 满足 R1 元素提取
-  - [ ] 4.2 实现序列化为 JSON 字符串，用于发送给 LLM —— 满足 R1 数据就绪
-  - [ ] 4.3 为 UITreeSerializer 序列化完整性编写单元测试
+  - [x] 4.1 实现 `UITreeSerializer`，从 AccessibilityNodeInfo 递归遍历提取为 `UIElement` 列表，过滤无意义的装饰节点 —— 满足 R1 元素提取
+  - [x] 4.2 实现序列化为 JSON 字符串，用于发送给 LLM —— 满足 R1 数据就绪
+  - [x] 4.3 为 UITreeSerializer 序列化完整性编写单元测试
 
 - [ ] 5. 实现数据持久化层 (R9, R8, R11)
   - [ ] 5.1 编写 Room Entity 类 —— `ConversationEntity`, `MessageEntity`, `UITreeRecordEntity`，含外键关系和索引 —— 满足 R9
