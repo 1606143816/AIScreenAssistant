@@ -8,7 +8,7 @@
 
 - [ ] 2. 检查点 - 确认项目可编译运行，骨架无误 (需 Android SDK 环境)
 
-- [ ] 3. 实现核心数据模型 (R1, R2, R4, R5, R8, R9, R11)
+- [x] 3. 实现核心数据模型 (R1, R2, R4, R5, R8, R9, R11)
   - [x] 3.1 定义 `UIElement` 数据类（含 id, type, text, contentDescription, hint, bounds, isClickable, isEditable, isPassword, isScrollable 等字段）和 `SerializedUITree` 数据类（含 packageName, activityName, elements 列表, timestamp）—— 满足 R1 UI 树结构
   - [x] 3.2 定义 `UIElementReference` 和 `AnalysisResult` 数据类（含 screenDescription, keyElements, suggestionText, actions）—— 满足 R2 分析响应结构
   - [x] 3.3 定义 `Action` sealed class（Click, LongClick, InputText, Swipe, PressBack, ScrollForward, ScrollBackward, OpenApp），使用 elementIndex 引用 UI 元素 —— 满足 R4 Action 类型
@@ -17,12 +17,12 @@
   - [x] 3.6 为 Action 序列化/反序列化编写单元测试
   - [x] 3.7 为 AnalysisResult JSON 反序列化编写单元测试
 
-- [ ] 4. 实现 UI 树序列化工具 (R1)
+- [x] 4. 实现 UI 树序列化工具 (R1)
   - [x] 4.1 实现 `UITreeSerializer`，从 AccessibilityNodeInfo 递归遍历提取为 `UIElement` 列表，过滤无意义的装饰节点 —— 满足 R1 元素提取
   - [x] 4.2 实现序列化为 JSON 字符串，用于发送给 LLM —— 满足 R1 数据就绪
   - [x] 4.3 为 UITreeSerializer 序列化完整性编写单元测试
 
-- [ ] 5. 实现数据持久化层 (R9, R8, R11)
+- [x] 5. 实现数据持久化层 (R9, R8, R11)
   - [x] 5.1 编写 Room Entity 类 —— `ConversationEntity`, `MessageEntity`, `UITreeRecordEntity`，含外键关系和索引 —— 满足 R9
   - [x] 5.2 编写 Room DAO 接口 —— `ConversationDao`（增删查 + 按时间倒序分页）、`MessageDao`（按 conversationId 查询）—— 满足 R9
   - [x] 5.3 编写 `AppDatabase` Room 数据库类，声明所有 Entity 和 DAO，配置 migration 策略 —— 满足 R9
@@ -32,7 +32,7 @@
 
 - [ ] 6. 检查点 - 确认数据库和 DataStore 操作通过测试
 
-- [ ] 7. 实现网络层 —— LLM API 接入 (R2, R8)
+- [x] 7. 实现网络层 —— LLM API 接入 (R2, R8)
   - [x] 7.1 实现 `LLMApiService`，封装 OkHttp 客户端，构造 JSON POST 请求（SerializedUITree JSON + 用户 prompt + 对话上下文），使用 Chat Completions 兼容格式 —— 满足 R2 JSON 界面数据发送
   - [x] 7.2 设计并实现 System Prompt 模板，告知 LLM 其角色为 Android 操作助手，约定输出格式为 AnalysisResult JSON —— 满足 R2 分析格式
   - [x] 7.3 实现 `LLMApiService` 的响应解析，将 LLM 返回 JSON 映射为 `AnalysisResult`，处理 4xx/5xx 错误 —— 满足 R2 错误处理
