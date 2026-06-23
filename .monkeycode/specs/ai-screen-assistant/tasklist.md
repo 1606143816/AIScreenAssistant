@@ -1,21 +1,21 @@
 # 需求实施计划
 
-- [ ] 1. 创建 Android 项目骨架与构建配置
+- [x] 1. 创建 Android 项目骨架与构建配置
    - 使用 Kotlin DSL 编写 `build.gradle.kts`，引入 Jetpack Compose (BOM)、Hilt、Room、OkHttp、Coroutines、Navigation-Compose、DataStore 依赖
    - 创建包结构: `core/data`, `core/domain`, `core/model`, `core/serializer`, `feature/conversation`, `feature/settings`, `feature/history`, `service/accessibility`, `service/overlay`, `di`
    - 创建 `AIHelperApplication` 类并添加 `@HiltAndroidApp` 注解
    - 配置 `AndroidManifest.xml` 声明 AccessibilityService、悬浮窗权限、INTERNET、RECORD_AUDIO 权限
 
-- [ ] 2. 检查点 - 确认项目可编译运行，骨架无误
+- [ ] 2. 检查点 - 确认项目可编译运行，骨架无误 (需 Android SDK 环境)
 
 - [ ] 3. 实现核心数据模型 (R1, R2, R4, R5, R8, R9, R11)
-  - [ ] 3.1 定义 `UIElement` 数据类（含 id, type, text, contentDescription, hint, bounds, isClickable, isEditable, isPassword, isScrollable 等字段）和 `SerializedUITree` 数据类（含 packageName, activityName, elements 列表, timestamp）—— 满足 R1 UI 树结构
-  - [ ] 3.2 定义 `UIElementReference` 和 `AnalysisResult` 数据类（含 screenDescription, keyElements, suggestionText, actions）—— 满足 R2 分析响应结构
-  - [ ] 3.3 定义 `Action` sealed class（Click, LongClick, InputText, Swipe, PressBack, ScrollForward, ScrollBackward, OpenApp），使用 elementIndex 引用 UI 元素 —— 满足 R4 Action 类型
-  - [ ] 3.4 定义 `Message`、`Conversation`、`UITreeRecord` 数据类，Message 含 role 枚举（USER/ASSISTANT）和 timestamp —— 满足 R3 对话上下文、R9 历史记录
-  - [ ] 3.5 定义 `LLMConfig` 数据类（baseUrl, apiKey, modelName, maxTokens, temperature）和 `OperationMode` 枚举（SUGGESTION, AUTONOMOUS）—— 满足 R8 配置、R11 模式切换
-  - [ ] 3.6 为 Action 序列化/反序列化编写单元测试
-  - [ ] 3.7 为 AnalysisResult JSON 反序列化编写单元测试
+  - [x] 3.1 定义 `UIElement` 数据类（含 id, type, text, contentDescription, hint, bounds, isClickable, isEditable, isPassword, isScrollable 等字段）和 `SerializedUITree` 数据类（含 packageName, activityName, elements 列表, timestamp）—— 满足 R1 UI 树结构
+  - [x] 3.2 定义 `UIElementReference` 和 `AnalysisResult` 数据类（含 screenDescription, keyElements, suggestionText, actions）—— 满足 R2 分析响应结构
+  - [x] 3.3 定义 `Action` sealed class（Click, LongClick, InputText, Swipe, PressBack, ScrollForward, ScrollBackward, OpenApp），使用 elementIndex 引用 UI 元素 —— 满足 R4 Action 类型
+  - [x] 3.4 定义 `Message`、`Conversation`、`UITreeRecord` 数据类，Message 含 role 枚举（USER/ASSISTANT）和 timestamp —— 满足 R3 对话上下文、R9 历史记录
+  - [x] 3.5 定义 `LLMConfig` 数据类（baseUrl, apiKey, modelName, maxTokens, temperature）和 `OperationMode` 枚举（SUGGESTION, AUTONOMOUS）—— 满足 R8 配置、R11 模式切换
+  - [x] 3.6 为 Action 序列化/反序列化编写单元测试
+  - [x] 3.7 为 AnalysisResult JSON 反序列化编写单元测试
 
 - [ ] 4. 实现 UI 树序列化工具 (R1)
   - [ ] 4.1 实现 `UITreeSerializer`，从 AccessibilityNodeInfo 递归遍历提取为 `UIElement` 列表，过滤无意义的装饰节点 —— 满足 R1 元素提取
