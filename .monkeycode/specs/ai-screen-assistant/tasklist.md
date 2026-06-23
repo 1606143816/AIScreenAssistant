@@ -75,35 +75,35 @@
 
 - [ ] 13. 检查点 - 确认服务层独立可运行，悬浮球点击可触发 UI 树读取
 
-- [ ] 14. 实现 UI 层 —— 导航与主题
+- [x] 14. 实现 UI 层 —— 导航与主题
    - 定义 Compose 主题（Material 3，颜色/字体/形状），配置 Navigation 路由（home, conversation, settings, history）—— 满足全部 UI 需求
    - 实现 `MainActivity` 作为单 Activity 入口，组装 NavHost 和权限请求流程（仅无障碍 + 悬浮窗）—— 满足 R7 首次启动权限引导
 
-- [ ] 15. 实现对话界面 (R2, R3, R4, R5, R11)
-  - [ ] 15.1 实现 `ConversationViewModel`，管理对话状态（消息列表、当前 UI 树、操作模式、LLM 请求状态），对接 AnalyzeScreenUseCase、ExecuteActionUseCase、ManageConversationUseCase、ProcessVoiceInputUseCase —— 满足 R2、R3、R4、R5、R11
-  - [ ] 15.2 实现 `ConversationScreen` Compose 界面 —— 顶部显示当前应用名和界面摘要、消息气泡列表（用户/AI 区分样式）、输入栏、发送按钮 —— 满足 R3
-  - [ ] 15.3 实现 `ModeSwitchChip` 组件，在对话界面顶部显示当前操作模式并支持点击切换（建议/自主），切换后立即生效并持久化 —— 满足 R11
-  - [ ] 15.4 实现操作建议卡片组件（仅建议模式下显示），展示步骤说明 + 「采纳执行」「忽略」按钮 —— 满足 R5
-  - [ ] 15.5 实现操作进度指示器，在自主执行模式下按步骤更新操作状态 —— 满足 R4
-  - [ ] 15.6 实现语音输入功能，长按录音按钮触发 SpeechRecognizer，显示波形动画和实时文字 —— 满足 R3
-  - [ ] 15.7 实现 LLM 请求中状态动画（思考指示器）和取消请求按钮 —— 满足 R2
+- [x] 15. 实现对话界面 (R2, R3, R4, R5, R11)
+  - [x] 15.1 实现 `ConversationViewModel`，管理对话状态（消息列表、当前 UI 树、操作模式、LLM 请求状态），对接 AnalyzeScreenUseCase、ExecuteActionUseCase、ManageConversationUseCase、ProcessVoiceInputUseCase —— 满足 R2、R3、R4、R5、R11
+  - [x] 15.2 实现 `ConversationScreen` Compose 界面 —— 顶部显示当前应用名和界面摘要、消息气泡列表（用户/AI 区分样式）、输入栏、发送按钮 —— 满足 R3
+  - [x] 15.3 实现 `ModeSwitchChip` 组件，在对话界面顶部显示当前操作模式并支持点击切换（建议/自主），切换后立即生效并持久化 —— 满足 R11
+  - [x] 15.4 实现操作建议卡片组件（仅建议模式下显示），展示步骤说明 + 「采纳执行」「忽略」按钮 —— 满足 R5
+  - [x] 15.5 实现操作进度指示器，在自主执行模式下按步骤更新操作状态 —— 满足 R4
+  - [x] 15.6 实现语音输入功能，长按录音按钮触发 SpeechRecognizer，显示波形动画和实时文字 —— 满足 R3
+  - [x] 15.7 实现 LLM 请求中状态动画（思考指示器）和取消请求按钮 —— 满足 R2
 
-- [ ] 16. 实现设置界面 (R8)
-  - [ ] 16.1 实现 `SettingsViewModel`，管理 LLMConfig 表单状态和 OperationMode 偏好 —— 满足 R8、R11
-  - [ ] 16.2 实现 `SettingsScreen` Compose 界面 —— API 地址输入、API Key 输入（密码字段）、模型名称输入、连接验证按钮、操作模式切换 —— 满足 R8
-  - [ ] 16.3 实现连接验证交互，点击「验证连接」后调用 ValidateLLMConfigUseCase 并展示验证结果 —— 满足 R8
+- [x] 16. 实现设置界面 (R8)
+  - [x] 16.1 实现 `SettingsViewModel`，管理 LLMConfig 表单状态和 OperationMode 偏好 —— 满足 R8、R11
+  - [x] 16.2 实现 `SettingsScreen` Compose 界面 —— API 地址输入、API Key 输入（密码字段）、模型名称输入、连接验证按钮、操作模式切换 —— 满足 R8
+  - [x] 16.3 实现连接验证交互，点击「验证连接」后调用 ValidateLLMConfigUseCase 并展示验证结果 —— 满足 R8
 
-- [ ] 17. 实现历史记录界面 (R9)
-  - [ ] 17.1 实现 `HistoryViewModel`，加载 ConversationRepository 的对话历史流 —— 满足 R9
-  - [ ] 17.2 实现 `HistoryScreen` Compose 界面 —— 时间倒序列表（对话摘要 + 时间 + 界面简要描述），点击进入详情，滑动删除 —— 满足 R9
-  - [ ] 17.3 实现历史详情界面，加载完整对话消息和对应界面描述 —— 满足 R9
+- [x] 17. 实现历史记录界面 (R9)
+  - [x] 17.1 实现 `HistoryViewModel`，加载 ConversationRepository 的对话历史流 —— 满足 R9
+  - [x] 17.2 实现 `HistoryScreen` Compose 界面 —— 时间倒序列表（对话摘要 + 时间 + 界面简要描述），点击进入详情，滑动删除 —— 满足 R9
+  - [x] 17.3 实现历史详情界面，加载完整对话消息和对应界面描述 —— 满足 R9
 
-- [ ] 18. 实现首页 (R7, R10)
+- [x] 18. 实现首页 (R7, R10)
    - 实现 `HomeScreen` Compose 界面 —— 应用简介、功能入口卡片（开始对话 / 历史记录 / 设置）、无障碍服务状态显示 —— 满足 R7 权限引导
    - 实现首页中的离线提示横幅组件，监听 NetworkMonitor 状态 —— 满足 R10
 
-- [ ] 19. 实现 DI 模块
-   - 编写 Hilt Module 类 (`DatabaseModule`, `NetworkModule`, `RepositoryModule`, `UseCaseModule`)，提供 Room 数据库、OkHttp、Repository、UseCase 的单例依赖 —— 满足架构 DI 需求
+- [x] 19. 实现 DI 模块
+   - 编写 Hilt Module 类 (`AppModule`)，提供 Room 数据库、OkHttp、AccessibilityServiceBridge 的单例依赖 —— 满足架构 DI 需求
 
 - [ ] 20. 实现错误处理与边界逻辑 (R2, R4, R7, R10)
    - 实现全局异常处理，LLM API 超时自动取消 + 重试按钮，网络不可用入队列 + 恢复自动重试 —— 满足 R2、R10
