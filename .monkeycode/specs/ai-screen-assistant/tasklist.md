@@ -48,16 +48,16 @@
   - [ ] 8.5 为 ConversationRepository CRUD 编写单元测试
 
 - [ ] 9. 实现 Domain 层 —— Use Cases (R1, R2, R3, R4, R5, R7, R8, R9, R11)
-  - [ ] 9.1 实现 `ReadUITreeUseCase`，通过 AIAccessibilityService 获取当前界面 UI 树，调用 UITreeSerializer 序列化 —— 满足 R1
-  - [ ] 9.2 实现 `FilterSensitiveNodesUseCase`，遍历 SerializedUITree 将 isPassword=true 节点的 text 替换为 "[已隐藏]" —— 满足 R7 敏感字段过滤
-  - [ ] 9.3 实现 `AnalyzeScreenUseCase`，组合 ReadUITreeUseCase + FilterSensitiveNodesUseCase + LLMRepository，将界面描述与用户指令发送至 LLM 并返回 AnalysisResult —— 满足 R2
-  - [ ] 9.4 实现 `ExecuteActionUseCase`，接收 List<Action>，通过 AIAccessibilityService 逐条执行，返回 Flow<ActionResult>，检测连续失败暂停 —— 满足 R4、R5
-  - [ ] 9.5 实现 `ManageConversationUseCase`，创建/追加消息/结束会话，关联 UITreeRecord —— 满足 R9
-  - [ ] 9.6 实现 `ProcessVoiceInputUseCase`，封装 SpeechRecognizer 调用，将音频转为文本 —— 满足 R3 语音输入
-  - [ ] 9.7 实现 `ValidateLLMConfigUseCase`，使用配置调用 LLM API 测试端点并返回验证结果 —— 满足 R8 连接验证
-  - [ ] 9.8 为 AnalyzeScreenUseCase 请求组装逻辑编写单元测试
-  - [ ] 9.9 为 ExecuteActionUseCase 失败计数和暂停逻辑编写单元测试
-  - [ ] 9.10 为 FilterSensitiveNodesUseCase 过滤逻辑编写单元测试
+  - [x] 9.1 实现 `ReadUITreeUseCase`，通过 AIAccessibilityService 获取当前界面 UI 树，调用 UITreeSerializer 序列化 —— 满足 R1
+  - [x] 9.2 实现 `FilterSensitiveNodesUseCase`，遍历 SerializedUITree 将 isPassword=true 节点的 text 替换为 "[已隐藏]" —— 满足 R7 敏感字段过滤
+  - [x] 9.3 实现 `AnalyzeScreenUseCase`，组合 ReadUITreeUseCase + FilterSensitiveNodesUseCase + LLMRepository —— 满足 R2
+  - [x] 9.4 实现 `ExecuteActionUseCase`，接收 List<Action>，通过 AIAccessibilityService 逐条执行，返回 Flow<ActionResult>，检测连续失败暂停 —— 满足 R4、R5
+  - [x] 9.5 实现 `ManageConversationUseCase`，创建/追加消息/结束会话，关联 UITreeRecord —— 满足 R9
+  - [x] 9.6 实现 `ProcessVoiceInputUseCase`，封装 SpeechRecognizer 调用，将音频转为文本 —— 满足 R3 语音输入
+  - [x] 9.7 实现 `ValidateLLMConfigUseCase`，使用配置调用 LLM API 测试端点并返回验证结果 —— 满足 R8 连接验证
+  - [x] 9.8 为 AnalyzeScreenUseCase 请求组装逻辑编写单元测试
+  - [x] 9.9 为 ExecuteActionUseCase 失败计数和暂停逻辑编写单元测试
+  - [x] 9.10 为 FilterSensitiveNodesUseCase 过滤逻辑编写单元测试
 
 - [ ] 10. 检查点 - 确认所有 Use Case 覆盖需求
 
