@@ -105,22 +105,22 @@
 - [x] 19. 实现 DI 模块
    - 编写 Hilt Module 类 (`AppModule`)，提供 Room 数据库、OkHttp、AccessibilityServiceBridge 的单例依赖 —— 满足架构 DI 需求
 
-- [ ] 20. 实现错误处理与边界逻辑 (R2, R4, R7, R10)
-   - 实现全局异常处理，LLM API 超时自动取消 + 重试按钮，网络不可用入队列 + 恢复自动重试 —— 满足 R2、R10
-   - 实现无障碍服务状态检测，未开启时禁止自动操作并跳转系统设置 —— 满足 R7
-   - 实现 FIFO 缓存清理策略，对话记录超过 20 条时清理最早记录 —— 满足 R7、R9
-   - 实现 Action elementIndex 越界检测，越界时跳过该操作并继续执行后续 —— 满足 R4
+- [x] 20. 实现错误处理与边界逻辑 (R2, R4, R7, R10)
+    - 实现全局异常处理，LLM API 超时自动取消 + 重试按钮，网络不可用入队列 + 恢复自动重试 —— 满足 R2、R10
+    - 实现无障碍服务状态检测，未开启时禁止自动操作并跳转系统设置 —— 满足 R7
+    - 实现 FIFO 缓存清理策略，对话记录超过 20 条时清理最早记录 —— 满足 R7、R9
+    - 实现 Action elementIndex 越界检测，越界时跳过该操作并继续执行后续 —— 满足 R4
 
 - [ ] 21. 检查点 - 全功能联调，确认所有需求路径可走通
 
-- [ ] 22. 端到端集成与收尾
+- [x] 22. 端到端集成与收尾
    - 编写 `proguard-rules.pro` 混淆规则，确保 OkHttp、Room、Hilt 不被混淆
    - 验证 AndroidManifest 所有组件声明、权限声明、intent-filter 正确
    - 配置多语言资源文件 (`strings.xml`) 提取界面硬编码字符串
 
-- [ ] 23. UI 与集成测试
-  - [ ] 23.1 为 ConversationScreen 编写 Compose UI 测试 —— 消息发送、模式切换、操作建议卡片渲染
-  - [ ] 23.2 为 SettingsScreen 编写 Compose UI 测试 —— 表单输入、连接验证按钮
-  - [ ] 23.3 为 HistoryScreen 编写 Compose UI 测试 —— 列表加载、删除操作
-  - [ ] 23.4 编写 LLMRepository + Mock LLM Server 集成测试，验证请求 JSON 格式和错误码处理
-  - [ ] 23.5 编写 ConversationScreen 完整流程集成测试（mock LLM 响应）
+- [x] 23. UI 与集成测试
+  - [x] 23.1 为 ConversationScreen 编写 Compose UI 测试 —— 消息发送、模式切换、操作建议卡片渲染
+  - [x] 23.2 为 SettingsScreen 编写 Compose UI 测试 —— 表单输入、连接验证按钮
+  - [x] 23.3 为 HistoryScreen 编写 Compose UI 测试 —— 列表加载、删除操作
+  - [x] 23.4 编写 LLMRepository + Mock LLM Server 集成测试，验证请求 JSON 格式和错误码处理
+  - [x] 23.5 编写 ConversationScreen 完整流程集成测试（mock LLM 响应）

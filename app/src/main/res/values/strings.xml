@@ -2,4 +2,92 @@
 <resources>
     <string name="app_name">AI 屏幕助手</string>
     <string name="accessibility_service_description">AI 屏幕助手需要无障碍服务权限来读取界面内容并执行自动化操作。应用不会收集或上传您的个人数据。</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">智能操作助手</string>
+    <string name="home_subtitle">通过无障碍服务读取屏幕内容，连接 LLM 实现智能分析与自动操作</string>
+    <string name="home_start_conversation">开始对话</string>
+    <string name="home_settings">设置</string>
+    <string name="home_history">历史</string>
+    <string name="status_accessibility">无障碍服务</string>
+    <string name="status_enabled">已开启</string>
+    <string name="status_disabled">未开启 — 请在系统设置中开启</string>
+    <string name="status_llm">LLM 配置</string>
+    <string name="status_llm_configured">已配置</string>
+    <string name="status_llm_not_configured">未配置 — 请前往设置页配置</string>
+
+    <!-- Conversation Screen -->
+    <string name="conversation_title">对话</string>
+    <string name="conversation_back">返回</string>
+    <string name="conversation_input_hint">输入指令…</string>
+    <string name="conversation_send">发送</string>
+    <string name="conversation_voice_input">语音输入</string>
+    <string name="conversation_analyzing">AI 正在分析…</string>
+    <string name="conversation_empty_title">AI 屏幕助手</string>
+    <string name="conversation_empty_subtitle">输入指令或点击麦克风开始语音输入\n当前屏幕内容将自动发送给 LLM 分析</string>
+    <string name="conversation_analysis_failed">分析失败</string>
+    <string name="mode_suggestion">建议模式</string>
+    <string name="mode_autonomous">自动模式</string>
+    <string name="analysis_result_title">分析结果</string>
+    <string name="analysis_suggestion_label">建议: %1$s</string>
+    <string name="analysis_actions_label">操作计划: %1$d 步</string>
+    <string name="analysis_elements_label">关键元素: %1$s</string>
+    <string name="action_close">关闭</string>
+    <string name="user_role">用户</string>
+    <string name="assistant_role">助手</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">设置</string>
+    <string name="settings_llm_section">LLM 连接配置</string>
+    <string name="settings_api_url">API 地址</string>
+    <string name="settings_api_url_hint">https://api.openai.com</string>
+    <string name="settings_api_key">API 密钥</string>
+    <string name="settings_api_key_hint">sk-…</string>
+    <string name="settings_model_name">模型名称</string>
+    <string name="settings_model_name_hint">gpt-4o</string>
+    <string name="settings_max_tokens">Max Tokens</string>
+    <string name="settings_temperature">Temperature</string>
+    <string name="settings_save">保存配置</string>
+    <string name="settings_saving">保存中…</string>
+    <string name="settings_validate">测试连接</string>
+    <string name="settings_validating">验证中…</string>
+    <string name="settings_validation_success">连接成功</string>
+    <string name="settings_validation_failed">连接失败</string>
+    <string name="settings_validation_model">模型: %1$s</string>
+    <string name="settings_operation_section">操作模式</string>
+    <string name="settings_suggestion_desc">LLM 将分析屏幕并提供操作建议，由您决定是否执行</string>
+    <string name="settings_autonomous_desc">LLM 将自动分析屏幕并执行操作</string>
+    <string name="settings_config_incomplete">请填写完整的 LLM 配置信息</string>
+    <string name="settings_save_failed">保存失败</string>
+    <string name="settings_about_title">关于</string>
+    <string name="settings_about_content">AI 屏幕助手 v1.0.0\n通过 Android 无障碍服务读取屏幕内容，\n连接云端 LLM 进行智能分析和自动化操作。</string>
+
+    <!-- History Screen -->
+    <string name="history_title">历史记录</string>
+    <string name="history_detail_title">对话详情</string>
+    <string name="history_empty">暂无历史记录</string>
+    <string name="history_empty_hint">开始一段新对话后，记录将显示在这里</string>
+    <string name="history_delete">删除</string>
+    <string name="history_load_failed">加载失败</string>
+    <string name="history_delete_failed">删除失败</string>
+
+    <!-- Notification -->
+    <string name="notification_channel_name">AI 屏幕助手</string>
+    <string name="notification_content_ready">悬浮球已就绪，点击开始分析</string>
+    <string name="notification_visible">悬浮球已显示</string>
+    <string name="notification_hidden">悬浮球已隐藏</string>
+    <string name="notification_toggle">隐藏/显示</string>
+
+    <!-- Overlay -->
+    <string name="overlay_title">AI 屏幕助手</string>
+
+    <!-- Errors -->
+    <string name="error_network">网络错误</string>
+    <string name="error_not_found">未找到: %1$s</string>
+    <string name="error_not_clickable">元素 %1$d 不可点击</string>
+    <string name="error_not_editable">元素 %1$d 不可编辑</string>
+    <string name="error_not_scrollable">元素 %1$d 不可滚动</string>
+    <string name="error_speech_not_available">语音识别不可用</string>
+    <string name="error_llm_not_configured">LLM 配置未设置</string>
+    <string name="error_unknown">未知错误</string>
 </resources>
