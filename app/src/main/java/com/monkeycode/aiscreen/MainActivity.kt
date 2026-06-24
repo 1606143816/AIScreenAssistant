@@ -14,7 +14,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
+import com.monkeycode.aiscreen.core.data.network.NetworkMonitor
 import com.monkeycode.aiscreen.core.data.repository.SettingsRepository
 import com.monkeycode.aiscreen.service.accessibility.AIAccessibilityService
 import com.monkeycode.aiscreen.service.overlay.OverlayService
@@ -35,8 +37,12 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var settingsRepository: SettingsRepository
 
+    @Inject
+    lateinit var networkMonitor: NetworkMonitor
+
     private var accessibilityEnabled by mutableStateOf(false)
     private var llmConfigured by mutableStateOf(false)
+    private var isOnline by mutableStateOf(true)
 
     private val activityScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
@@ -69,6 +75,10 @@ class MainActivity : ComponentActivity() {
         checkStatuses()
 
         setContent {
+            val isNetworkOnline by networkMonitor.isOnline.collectAsStateWithLifecycle(
+                initialValue = true
+            )
+
             AIScreenAssistantTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -78,7 +88,8 @@ class MainActivity : ComponentActivity() {
                         AppNavGraph(
                             navController = it,
                             accessibilityEnabled = accessibilityEnabled,
-                            llmConfigured = llmConfigured
+                            llmConfigured = llmConfigured,
+                            isOnline = isNetworkOnline
                         )
                     }
                 }

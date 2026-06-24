@@ -21,6 +21,7 @@ fun AppNavGraph(
     navController: NavHostController,
     accessibilityEnabled: Boolean,
     llmConfigured: Boolean,
+    isOnline: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -32,6 +33,7 @@ fun AppNavGraph(
             HomeScreen(
                 accessibilityEnabled = accessibilityEnabled,
                 llmConfigured = llmConfigured,
+                isOnline = isOnline,
                 onNavigateToSettings = {
                     navController.navigate(Screen.Settings.route)
                 },
