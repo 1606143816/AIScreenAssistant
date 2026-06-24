@@ -78,6 +78,10 @@
 *.war
 *.ear
 **/.gradle/
+**/build/
+/local.properties
+*.apk
+*.aab
 
 # C/C++/Go/Rust
 *.o
