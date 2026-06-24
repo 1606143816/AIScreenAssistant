@@ -32,6 +32,9 @@ AI 屏幕助手 (AIScreenAssistant) Android 项目的完整技术文档。面向
 | `feature/history` | 历史记录界面模块 | [README](./模块/feature-history.md) |
 | `service/accessibility` | 无障碍服务（读取 UI 树 + 执行操作） | [README](./模块/service-accessibility.md) |
 | `service/overlay` | 悬浮球覆盖窗口服务 | [README](./模块/service-overlay.md) |
+| `ui/navigation` | Compose Navigation 路由和图定义 | [README](./模块/ui-navigation.md) |
+| `ui/screen` | Compose 界面组件（Home, Conversation, Settings, History） | [README](./模块/ui-screen.md) |
+| `ui/theme` | Material3 Light/Dark 主题配置 | [README](./模块/ui-theme.md) |
 | `di` | Hilt 依赖注入模块 | [README](./模块/di.md) |
 
 ---

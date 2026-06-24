@@ -49,20 +49,28 @@ workspace/
 │       │   └── xml/                        # 无障碍服务配置
 │       └── java/com/monkeycode/aiscreen/
 │           ├── AIHelperApplication.kt      # 应用入口
-│           ├── MainActivity.kt             # (待实现) 主 Activity
+│           ├── MainActivity.kt             # 主 Activity (Compose + Navigation + BroadcastReceiver)
 │           ├── core/                       # 核心层
 │           │   ├── data/                   # Repository 实现
-│           │   ├── domain/                 # UseCase 实现
+│           │   │   ├── datastore/          # DataStore 配置
+│           │   │   ├── local/              # Room 数据库 + DAO + Entity
+│           │   │   ├── network/            # LLMApiService + NetworkMonitor
+│           │   │   └── repository/         # Repository 实现
+│           │   ├── domain/                 # UseCase 实现 + AccessibilityServiceBridge
 │           │   ├── model/                  # 数据模型
 │           │   └── serializer/             # UI 树序列化
-│           ├── feature/                    # 功能界面
-│           │   ├── conversation/           # 对话界面
-│           │   ├── settings/               # 设置界面
-│           │   └── history/                # 历史记录界面
+│           ├── feature/                    # 功能界面 (ViewModel)
+│           │   ├── conversation/           # ConversationViewModel
+│           │   ├── settings/               # SettingsViewModel
+│           │   └── history/                # HistoryViewModel
 │           ├── service/                    # Android 服务
 │           │   ├── accessibility/          # 无障碍服务
 │           │   └── overlay/                # 悬浮球服务
-│           └── di/                         # 依赖注入模块
+│           ├── ui/                         # Compose UI 组件
+│           │   ├── navigation/             # Screen 路由 + NavGraph
+│           │   ├── screen/                 # 4 个 Screen composable
+│           │   └── theme/                  # Material3 主题
+│           └── di/                         # Hilt 依赖注入模块
 ├── build.gradle.kts                        # 项目级构建配置
 └── settings.gradle.kts                     # 项目设置
 ```
@@ -72,13 +80,21 @@ workspace/
 | 包 | 层级 | 职责 |
 |----|------|------|
 | `core.model` | 核心 | 数据模型定义（Action, Conversation, Message 等） |
-| `core.domain` | 核心 | 业务逻辑 UseCase |
-| `core.data` | 核心 | Repository 实现，Room DAO |
+| `core.domain` | 核心 | 业务逻辑 UseCase + AccessibilityServiceBridge |
+| `core.data.datastore` | 核心 | Preferences DataStore 配置持久化 |
+| `core.data.local` | 核心 | Room 数据库、DAO、Entity |
+| `core.data.network` | 核心 | LLMApiService (OkHttp) + NetworkMonitor |
+| `core.data.repository` | 核心 | LLMRepository, ConversationRepository, SettingsRepository |
 | `core.serializer` | 核心 | AccessibilityNodeInfo -> SerializedUITree 转换 |
-| `feature.*` | 功能 | Compose UI 页面 + ViewModel |
-| `service.accessibility` | 服务 | Android AccessibilityService |
-| `service.overlay` | 服务 | Android Overlay Service |
-| `di` | 基础设施 | Hilt Module |
+| `feature.conversation` | 功能 | ConversationViewModel |
+| `feature.settings` | 功能 | SettingsViewModel |
+| `feature.history` | 功能 | HistoryViewModel |
+| `ui.navigation` | UI | Compose 路由 + NavGraph |
+| `ui.screen` | UI | Compose Screen composable (Home, Conversation, Settings, History) |
+| `ui.theme` | UI | Material3 Light/Dark 主题 |
+| `service.accessibility` | 服务 | AIAccessibilityService (读取 UI 树 + 执行操作) |
+| `service.overlay` | 服务 | OverlayService (可拖拽悬浮球 + 通知栏) |
+| `di` | 基础设施 | Hilt AppModule (OkHttp, Room DB, DAO, Bridge 提供) |
 
 ## 系统架构
 
