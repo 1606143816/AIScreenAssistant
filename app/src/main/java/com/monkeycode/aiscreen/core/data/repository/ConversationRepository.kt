@@ -31,8 +31,8 @@ class ConversationRepository @Inject constructor(
                     title = entity.title,
                     createdAt = entity.createdAt,
                     updatedAt = entity.updatedAt,
-                    lastMessage = null,
-                    lastAppPackage = null
+                    lastMessage = entity.latestMessage,
+                    lastAppPackage = entity.lastAppPackage
                 )
             }
         }
@@ -56,7 +56,9 @@ class ConversationRepository @Inject constructor(
                 id = conversation.id,
                 title = conversation.title,
                 createdAt = conversation.createdAt,
-                updatedAt = conversation.updatedAt
+                updatedAt = conversation.updatedAt,
+                latestMessage = conversation.messages.lastOrNull()?.content,
+                lastAppPackage = null
             )
         )
         val messageEntities = conversation.messages.map { it.toEntity(conversation.id) }
@@ -67,9 +69,9 @@ class ConversationRepository @Inject constructor(
 
     suspend fun appendMessage(conversationId: String, message: Message) {
         messageDao.insert(message.toEntity(conversationId))
-        conversationDao.update(
+        conversationDao.updateLatestMessage(
             id = conversationId,
-            title = "",
+            latestMessage = message.content,
             updatedAt = System.currentTimeMillis()
         )
     }

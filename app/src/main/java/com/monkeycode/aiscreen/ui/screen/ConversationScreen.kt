@@ -85,7 +85,7 @@ fun ConversationScreen(
                     }
                 },
                 onVoiceInput = {
-                    onEvent(ConversationEvent.SendMessage("")) // trigger voice input via ViewModel
+                    onEvent(ConversationEvent.StartVoiceInput)
                 },
                 isLoading = uiState.isAnalyzing
             )

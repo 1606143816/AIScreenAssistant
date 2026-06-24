@@ -1,10 +1,9 @@
 package com.monkeycode.aiscreen.core.domain
 
 import com.monkeycode.aiscreen.core.data.repository.LLMRepository
-import com.monkeycode.aiscreen.core.data.datastore.SettingsDataStore
+import com.monkeycode.aiscreen.core.data.repository.SettingsRepository
 import com.monkeycode.aiscreen.core.model.AnalysisResult
 import com.monkeycode.aiscreen.core.model.Message
-import com.monkeycode.aiscreen.core.model.OperationMode
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -14,7 +13,7 @@ class AnalyzeScreenUseCase @Inject constructor(
     private val readUITreeUseCase: ReadUITreeUseCase,
     private val filterSensitiveNodesUseCase: FilterSensitiveNodesUseCase,
     private val llmRepository: LLMRepository,
-    private val settingsDataStore: SettingsDataStore
+    private val settingsRepository: SettingsRepository
 ) {
     suspend operator fun invoke(
         userPrompt: String,
@@ -26,7 +25,7 @@ class AnalyzeScreenUseCase @Inject constructor(
 
         val filteredTree = filterSensitiveNodesUseCase(uiTree)
 
-        val config = settingsDataStore.llmConfig.first()
+        val config = settingsRepository.llmConfig.first()
             ?: return Result.failure(IllegalStateException("LLM configuration not set"))
 
         return llmRepository.analyze(filteredTree, userPrompt, conversationHistory, config)

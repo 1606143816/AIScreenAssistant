@@ -2,18 +2,17 @@ package com.monkeycode.aiscreen.feature.conversation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.monkeycode.aiscreen.core.domain.AnalyzeScreenUseCase
+    import com.monkeycode.aiscreen.core.domain.AnalyzeScreenUseCase
 import com.monkeycode.aiscreen.core.domain.ExecuteActionUseCase
 import com.monkeycode.aiscreen.core.domain.ManageConversationUseCase
 import com.monkeycode.aiscreen.core.domain.ProcessVoiceInputUseCase
+import com.monkeycode.aiscreen.core.model.Action
 import com.monkeycode.aiscreen.core.model.ActionResult
 import com.monkeycode.aiscreen.core.model.AnalysisResult
-import com.monkeycode.aiscreen.core.model.Conversation
 import com.monkeycode.aiscreen.core.model.Message
 import com.monkeycode.aiscreen.core.model.MessageRole
 import com.monkeycode.aiscreen.core.model.OperationMode
 import com.monkeycode.aiscreen.core.data.repository.SettingsRepository
-import com.monkeycode.aiscreen.core.model.SerializedUITree
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,6 +48,7 @@ sealed class ConversationEvent {
     data class ActionsExecuted(val results: List<ActionResult>) : ConversationEvent()
     data object ToggleMode : ConversationEvent()
     data object ClearError : ConversationEvent()
+    data object StartVoiceInput : ConversationEvent()
     data class VoiceResult(val text: String) : ConversationEvent()
     data class VoiceError(val error: String) : ConversationEvent()
 }
@@ -87,6 +87,7 @@ class ConversationViewModel @Inject constructor(
             is ConversationEvent.ActionsExecuted -> onActionsExecuted(event.results)
             is ConversationEvent.ToggleMode -> toggleMode()
             is ConversationEvent.ClearError -> clearError()
+            is ConversationEvent.StartVoiceInput -> startVoiceInput()
             is ConversationEvent.VoiceResult -> sendMessage(event.text)
             is ConversationEvent.VoiceError -> {
                 _uiState.value = _uiState.value.copy(error = event.error)
@@ -109,14 +110,22 @@ class ConversationViewModel @Inject constructor(
             )
 
             val state = _uiState.value
-            val convoId = state.conversationId ?: UUID.randomUUID().toString()
+            val convoId = state.conversationId ?: run {
+                val title = if (text.length > 20) text.take(20) + "..." else text
+                val conversation = manageConversationUseCase.createConversation(title)
+                conversation.id.also { id ->
+                    _uiState.value = _uiState.value.copy(conversationId = id)
+                }
+            }
 
-            _uiState.value = state.copy(
-                messages = state.messages + userMessage,
+            _uiState.value = _uiState.value.copy(
+                messages = _uiState.value.messages + userMessage,
                 conversationId = convoId
             )
 
-            val history = state.messages.map {
+            persistMessage(convoId, userMessage)
+
+            val history = _uiState.value.messages.map {
                 Message(
                     id = it.id,
                     role = it.role,
@@ -143,6 +152,8 @@ class ConversationViewModel @Inject constructor(
                         currentApp = analysis.screenDescription
                     )
 
+                    persistMessage(convoId, assistantMessage)
+
                     if (_uiState.value.operationMode == OperationMode.AUTONOMOUS &&
                         analysis.actions.isNotEmpty()) {
                         executeActions(analysis.actions)
@@ -160,9 +171,24 @@ class ConversationViewModel @Inject constructor(
                         isAnalyzing = false,
                         error = throwable.message
                     )
+
+                    persistMessage(convoId, errorMessage)
                 }
             )
         }
+    }
+
+    private suspend fun persistMessage(conversationId: String, message: MessageUiItem) {
+        manageConversationUseCase.appendMessage(
+            conversationId,
+            Message(
+                id = message.id,
+                role = message.role,
+                content = message.content,
+                analysisResult = message.analysisResult,
+                timestamp = message.timestamp
+            )
+        )
     }
 
     private fun executeActions(actions: List<com.monkeycode.aiscreen.core.model.Action>) {

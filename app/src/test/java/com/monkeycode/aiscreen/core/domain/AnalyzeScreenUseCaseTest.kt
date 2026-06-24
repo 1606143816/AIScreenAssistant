@@ -1,7 +1,7 @@
 package com.monkeycode.aiscreen.core.domain
 
-import com.monkeycode.aiscreen.core.data.datastore.SettingsDataStore
 import com.monkeycode.aiscreen.core.data.repository.LLMRepository
+import com.monkeycode.aiscreen.core.data.repository.SettingsRepository
 import com.monkeycode.aiscreen.core.model.AnalysisResult
 import com.monkeycode.aiscreen.core.model.LLMConfig
 import com.monkeycode.aiscreen.core.model.SerializedUITree
@@ -19,7 +19,7 @@ class AnalyzeScreenUseCaseTest {
     private lateinit var readUITreeUseCase: ReadUITreeUseCase
     private lateinit var filterUseCase: FilterSensitiveNodesUseCase
     private lateinit var llmRepository: LLMRepository
-    private lateinit var settingsDataStore: SettingsDataStore
+    private lateinit var settingsRepository: SettingsRepository
     private lateinit var useCase: AnalyzeScreenUseCase
 
     @Before
@@ -27,15 +27,15 @@ class AnalyzeScreenUseCaseTest {
         readUITreeUseCase = mockk()
         filterUseCase = FilterSensitiveNodesUseCase()
         llmRepository = mockk()
-        settingsDataStore = mockk()
-        useCase = AnalyzeScreenUseCase(readUITreeUseCase, filterUseCase, llmRepository, settingsDataStore)
+        settingsRepository = mockk()
+        useCase = AnalyzeScreenUseCase(readUITreeUseCase, filterUseCase, llmRepository, settingsRepository)
     }
 
     @Test
     fun should_return_failure_when_ui_tree_read_fails() = runBlocking {
         every { readUITreeUseCase.invoke() } returns Result.failure(Exception("Read failed"))
 
-        every { settingsDataStore.llmConfig } returns flowOf(
+        every { settingsRepository.llmConfig } returns flowOf(
             LLMConfig("url", "key", "model")
         )
 
@@ -49,7 +49,7 @@ class AnalyzeScreenUseCaseTest {
     fun should_return_failure_when_config_not_set() = runBlocking {
         val uiTree = SerializedUITree("com.test", emptyList(), 1000)
         every { readUITreeUseCase.invoke() } returns Result.success(uiTree)
-        every { settingsDataStore.llmConfig } returns flowOf(null)
+        every { settingsRepository.llmConfig } returns flowOf(null)
 
         val result = useCase("test prompt", emptyList())
 
@@ -64,7 +64,7 @@ class AnalyzeScreenUseCaseTest {
         val expectedResult = AnalysisResult("desc", emptyList(), "suggestion", emptyList())
 
         every { readUITreeUseCase.invoke() } returns Result.success(uiTree)
-        every { settingsDataStore.llmConfig } returns flowOf(config)
+        every { settingsRepository.llmConfig } returns flowOf(config)
         coEvery { llmRepository.analyze(uiTree, "test", emptyList(), config) } returns Result.success(expectedResult)
 
         val result = useCase("test", emptyList())

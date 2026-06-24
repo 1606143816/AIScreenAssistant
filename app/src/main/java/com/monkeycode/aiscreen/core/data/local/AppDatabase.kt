@@ -6,13 +6,11 @@ import com.monkeycode.aiscreen.core.data.local.dao.ConversationDao
 import com.monkeycode.aiscreen.core.data.local.dao.MessageDao
 import com.monkeycode.aiscreen.core.data.local.entity.ConversationEntity
 import com.monkeycode.aiscreen.core.data.local.entity.MessageEntity
-import com.monkeycode.aiscreen.core.data.local.entity.UITreeRecordEntity
 
 @Database(
     entities = [
         ConversationEntity::class,
-        MessageEntity::class,
-        UITreeRecordEntity::class
+        MessageEntity::class
     ],
     version = 1,
     exportSchema = false
