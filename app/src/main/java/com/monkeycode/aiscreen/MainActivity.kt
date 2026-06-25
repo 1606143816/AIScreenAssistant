@@ -4,9 +4,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.core.content.ContextCompat
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -65,14 +65,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        registerReceiver(
-            overlayReceiver,
-            IntentFilter().apply {
-                addAction(OverlayService.ACTION_ANALYZE)
-                addAction(OverlayService.ACTION_VOICE_INPUT)
-            },
-            ContextCompat.RECEIVER_NOT_EXPORTED
-        )
+        val filter = IntentFilter().apply {
+            addAction(OverlayService.ACTION_ANALYZE)
+            addAction(OverlayService.ACTION_VOICE_INPUT)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(overlayReceiver, filter, RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(overlayReceiver, filter)
+        }
 
         checkStatuses()
 
