@@ -10,6 +10,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
 import kotlinx.serialization.json.putJsonObject
@@ -131,12 +132,15 @@ class LLMApiService @Inject constructor(
         return try {
             val requestBody = buildJsonObject {
                 put("model", config.modelName)
-                putJsonArray("messages") {
-                    +buildJsonObject {
-                        put("role", "user")
-                        put("content", "ping")
+                put(
+                    "messages",
+                    buildJsonArray {
+                        add(buildJsonObject {
+                            put("role", "user")
+                            put("content", "ping")
+                        })
                     }
-                }
+                )
                 put("max_tokens", 5)
             }
 
