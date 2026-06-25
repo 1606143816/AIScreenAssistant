@@ -6,8 +6,11 @@ import com.monkeycode.aiscreen.core.model.SerializableRect
 import com.monkeycode.aiscreen.core.model.SerializedUITree
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UITreeSerializer {
+@Singleton
+class UITreeSerializer @Inject constructor() {
 
     private val json = Json {
         prettyPrint = false
