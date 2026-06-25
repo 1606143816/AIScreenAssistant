@@ -132,7 +132,7 @@ class LLMApiService @Inject constructor(
             val requestBody = buildJsonObject {
                 put("model", config.modelName)
                 putJsonArray("messages") {
-                    putJsonObject {
+                    addJsonObject {
                         put("role", "user")
                         put("content", "ping")
                     }
