@@ -212,7 +212,6 @@ class LLMRepositoryIntegrationTest {
                     isLongClickable = false,
                     isEditable = false,
                     isPassword = false,
-                    isCheckable = false,
                     isChecked = false,
                     isScrollable = false,
                     isFocused = false,

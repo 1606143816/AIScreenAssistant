@@ -7,9 +7,11 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.IBinder
+import android.Manifest
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -233,6 +235,11 @@ class OverlayService : Service() {
         }
 
         val manager = getSystemService(NotificationManager::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) !=
+                PackageManager.PERMISSION_GRANTED
+            ) return
+        }
         val contentText = if (isExpanded) "悬浮球已显示" else "悬浮球已隐藏"
         manager.notify(NOTIFICATION_ID, NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("AI 屏幕助手")

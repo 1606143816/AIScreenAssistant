@@ -1,6 +1,5 @@
 package com.monkeycode.aiscreen.feature.conversation
 
-import androidx.lifecycle.SavedStateHandle
 import com.monkeycode.aiscreen.core.data.repository.LLMRepository
 import com.monkeycode.aiscreen.core.data.repository.SettingsRepository
 import com.monkeycode.aiscreen.core.domain.AnalyzeScreenUseCase
@@ -13,25 +12,23 @@ import com.monkeycode.aiscreen.core.domain.AccessibilityServiceBridge
 import com.monkeycode.aiscreen.core.data.datastore.SettingsDataStore
 import com.monkeycode.aiscreen.core.model.Action
 import com.monkeycode.aiscreen.core.model.AnalysisResult
-import com.monkeycode.aiscreen.core.model.Message
+import com.monkeycode.aiscreen.core.model.Conversation
 import com.monkeycode.aiscreen.core.model.OperationMode
 import com.monkeycode.aiscreen.core.model.SerializedUITree
 import com.monkeycode.aiscreen.core.model.UIElement
 import com.monkeycode.aiscreen.core.model.SerializableRect
 import com.monkeycode.aiscreen.core.model.ActionResult
+import io.mockk.coEvery
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
-import org.mockito.kotlin.any
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ConversationFlowIntegrationTest {
@@ -41,10 +38,10 @@ class ConversationFlowIntegrationTest {
 
     @Test
     fun fullConversationFlow_analyzeAndExecuteActions() = runTest {
-        val bridge = mock<AccessibilityServiceBridge>()
-        val settingsDataStore = mock<SettingsDataStore>()
-        val llmRepository = mock<LLMRepository>()
-        val uiTreeSerializer = mock<com.monkeycode.aiscreen.core.serializer.UITreeSerializer>()
+        val bridge = mockk<AccessibilityServiceBridge>()
+        val settingsDataStore = mockk<SettingsDataStore>()
+        val llmRepository = mockk<LLMRepository>()
+        val uiTreeSerializer = mockk<com.monkeycode.aiscreen.core.serializer.UITreeSerializer>()
 
         val sampleTree = SerializedUITree(
             packageName = "com.example.app",
@@ -61,7 +58,6 @@ class ConversationFlowIntegrationTest {
                     isLongClickable = false,
                     isEditable = false,
                     isPassword = false,
-                    isCheckable = false,
                     isChecked = false,
                     isScrollable = false,
                     isFocused = false,
@@ -87,55 +83,45 @@ class ConversationFlowIntegrationTest {
             actions = listOf(Action.Click(elementIndex = 0))
         )
 
-        whenever(bridge.isEnabled()).thenReturn(true)
-        whenever(bridge.readUITree()).thenReturn(sampleTree)
-        whenever(bridge.performAction(any())).thenReturn(
-            ActionResult.Success(0, "ok")
-        )
-        whenever(uiTreeSerializer.serialize(any())).thenReturn(sampleTree)
-        whenever(settingsDataStore.llmConfig).thenReturn(
-            flowOf(
-                com.monkeycode.aiscreen.core.model.LLMConfig(
-                    baseUrl = "https://api.openai.com",
-                    apiKey = "sk-test",
-                    modelName = "gpt-4o"
-                )
+        every { bridge.isEnabled() } returns true
+        every { bridge.readUITree() } returns sampleTree
+        every { bridge.performAction(any()) } returns ActionResult.Success(0, "ok")
+        every { uiTreeSerializer.serialize(any()) } returns sampleTree
+        every { settingsDataStore.llmConfig } returns flowOf(
+            com.monkeycode.aiscreen.core.model.LLMConfig(
+                baseUrl = "https://api.openai.com",
+                apiKey = "sk-test",
+                modelName = "gpt-4o"
             )
         )
-        whenever(settingsDataStore.operationMode).thenReturn(flowOf(OperationMode.AUTONOMOUS))
-        whenever(llmRepository.analyze(any(), any(), any(), any())).thenReturn(
-            Result.success(sampleResult)
-        )
+        every { settingsDataStore.operationMode } returns flowOf(OperationMode.AUTONOMOUS)
+        coEvery { llmRepository.analyze(any(), any(), any(), any()) } returns Result.success(sampleResult)
 
         val readUITree = ReadUITreeUseCase(bridge, uiTreeSerializer)
         val filterSensitive = FilterSensitiveNodesUseCase()
         val analyzeScreen = AnalyzeScreenUseCase(readUITree, filterSensitive, llmRepository, settingsDataStore)
         val executeAction = ExecuteActionUseCase(bridge)
 
-        val settingsRepository = mock<SettingsRepository>()
-        whenever(settingsRepository.operationMode).thenReturn(flowOf(OperationMode.AUTONOMOUS))
-        whenever(settingsRepository.llmConfig).thenReturn(
-            flowOf(
-                com.monkeycode.aiscreen.core.model.LLMConfig(
-                    baseUrl = "https://api.openai.com",
-                    apiKey = "sk-test",
-                    modelName = "gpt-4o"
-                )
+        val settingsRepository = mockk<SettingsRepository>()
+        every { settingsRepository.operationMode } returns flowOf(OperationMode.AUTONOMOUS)
+        every { settingsRepository.llmConfig } returns flowOf(
+            com.monkeycode.aiscreen.core.model.LLMConfig(
+                baseUrl = "https://api.openai.com",
+                apiKey = "sk-test",
+                modelName = "gpt-4o"
             )
         )
 
-        val manageConversation = mock<ManageConversationUseCase>()
-        whenever(manageConversation.createConversation(any())).thenReturn(
-            com.monkeycode.aiscreen.core.model.Conversation(
-                id = "1",
-                title = "登录页面",
-                createdAt = System.currentTimeMillis(),
-                updatedAt = System.currentTimeMillis(),
-                messages = emptyList()
-            )
+        val manageConversation = mockk<ManageConversationUseCase>()
+        every { manageConversation.createConversation(any()) } returns Conversation(
+            id = "1",
+            title = "登录页面",
+            createdAt = System.currentTimeMillis(),
+            updatedAt = System.currentTimeMillis(),
+            messages = emptyList()
         )
 
-        val voiceInput = mock<ProcessVoiceInputUseCase>()
+        val voiceInput = mockk<ProcessVoiceInputUseCase>()
 
         val viewModel = ConversationViewModel(
             analyzeScreenUseCase = analyzeScreen,
@@ -162,16 +148,16 @@ class ConversationFlowIntegrationTest {
 
     @Test
     fun toggleMode_persistsToDataStore() = runTest {
-        val settingsRepository = mock<SettingsRepository>()
-        whenever(settingsRepository.operationMode).thenReturn(flowOf(OperationMode.SUGGESTION))
-        whenever(settingsRepository.llmConfig).thenReturn(flowOf(null))
+        val settingsRepository = mockk<SettingsRepository>()
+        every { settingsRepository.operationMode } returns flowOf(OperationMode.SUGGESTION)
+        every { settingsRepository.llmConfig } returns flowOf(null)
 
         val viewModel = ConversationViewModel(
-            analyzeScreenUseCase = mock(),
-            executeActionUseCase = mock(),
-            manageConversationUseCase = mock(),
+            analyzeScreenUseCase = mockk(),
+            executeActionUseCase = mockk(),
+            manageConversationUseCase = mockk(),
             settingsRepository = settingsRepository,
-            processVoiceInputUseCase = mock()
+            processVoiceInputUseCase = mockk()
         )
 
         assertEquals(OperationMode.SUGGESTION, viewModel.uiState.value.operationMode)
@@ -183,16 +169,16 @@ class ConversationFlowIntegrationTest {
 
     @Test
     fun clearError_removesErrorFromState() = runTest {
-        val settingsRepository = mock<SettingsRepository>()
-        whenever(settingsRepository.operationMode).thenReturn(flowOf(OperationMode.SUGGESTION))
-        whenever(settingsRepository.llmConfig).thenReturn(flowOf(null))
+        val settingsRepository = mockk<SettingsRepository>()
+        every { settingsRepository.operationMode } returns flowOf(OperationMode.SUGGESTION)
+        every { settingsRepository.llmConfig } returns flowOf(null)
 
         val viewModel = ConversationViewModel(
-            analyzeScreenUseCase = mock(),
-            executeActionUseCase = mock(),
-            manageConversationUseCase = mock(),
+            analyzeScreenUseCase = mockk(),
+            executeActionUseCase = mockk(),
+            manageConversationUseCase = mockk(),
             settingsRepository = settingsRepository,
-            processVoiceInputUseCase = mock()
+            processVoiceInputUseCase = mockk()
         )
 
         viewModel.onEvent(ConversationEvent.VoiceError("识别错误"))
