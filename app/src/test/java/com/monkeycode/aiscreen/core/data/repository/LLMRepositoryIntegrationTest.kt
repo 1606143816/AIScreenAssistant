@@ -6,6 +6,10 @@ import com.monkeycode.aiscreen.core.model.UIElement
 import com.monkeycode.aiscreen.core.model.SerializableRect
 import com.monkeycode.aiscreen.core.model.Action
 import com.monkeycode.aiscreen.core.data.repository.LLMRepository
+import com.monkeycode.aiscreen.core.data.network.NetworkMonitor
+import io.mockk.every
+import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
@@ -36,7 +40,10 @@ class LLMRepositoryIntegrationTest {
     private fun createRepository(): LLMRepository {
         val okHttpClient = okhttp3.OkHttpClient.Builder().build()
         llmApiService = LLMApiService(okHttpClient)
-        return LLMRepository(llmApiService)
+        val mockNetworkMonitor = mockk<NetworkMonitor> {
+            every { isConnected } returns flowOf(true)
+        }
+        return LLMRepository(llmApiService, mockNetworkMonitor)
     }
 
     @Test
@@ -186,7 +193,6 @@ class LLMRepositoryIntegrationTest {
                     isLongClickable = true,
                     isEditable = true,
                     isPassword = false,
-                    isCheckable = false,
                     isChecked = false,
                     isScrollable = false,
                     isFocused = false,

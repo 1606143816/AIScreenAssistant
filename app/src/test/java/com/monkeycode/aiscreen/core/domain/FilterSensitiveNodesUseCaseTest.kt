@@ -85,7 +85,7 @@ class FilterSensitiveNodesUseCaseTest {
     @Test
     fun should_preserve_other_properties_after_filtering() {
         val original = createUIElement(0, "secret", isPassword = true, isClickable = true)
-        val tree = SerializedUITree("com.test", listOf(original), 1000)
+        val tree = SerializedUITree(packageName = "com.test", elements = listOf(original), timestamp = 1000)
 
         val filtered = useCase(tree)
 

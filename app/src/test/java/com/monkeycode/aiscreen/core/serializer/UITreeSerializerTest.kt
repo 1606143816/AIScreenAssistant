@@ -37,7 +37,7 @@ class UITreeSerializerTest {
         every { rootNode.isEnabled } returns true
         every { rootNode.isFocused } returns false
         every { rootNode.isCheckable } returns false
-        every { rootNode.getBoundsInScreen() } returns Rect(0, 0, 1080, 1920)
+        setBoundsMock(rootNode, 0, 0, 1080, 1920)
 
         val tree = serializer.serialize(rootNode)
 
@@ -71,7 +71,7 @@ class UITreeSerializerTest {
         every { buttonNode.isCheckable } returns false
         every { buttonNode.childCount } returns 0
         every { buttonNode.getChild(any<Int>()) } returns null
-        every { buttonNode.getBoundsInScreen() } returns Rect(100, 200, 300, 350)
+        setBoundsMock(buttonNode, 100, 200, 300, 350)
         every { buttonNode.childCount } returns 0
         every { buttonNode.getChild(any<Int>()) } returns null
 
@@ -110,7 +110,7 @@ class UITreeSerializerTest {
         every { decorNode.isCheckable } returns false
         every { decorNode.childCount } returns 0
         every { decorNode.getChild(any<Int>()) } returns null
-        every { decorNode.getBoundsInScreen() } returns Rect(0, 0, 100, 100)
+        setBoundsMock(decorNode, 0, 0, 100, 100)
         every { decorNode.childCount } returns 0
         every { decorNode.getChild(any<Int>()) } returns null
 
@@ -146,7 +146,7 @@ class UITreeSerializerTest {
         every { passwordNode.isCheckable } returns false
         every { passwordNode.childCount } returns 0
         every { passwordNode.getChild(any<Int>()) } returns null
-        every { passwordNode.getBoundsInScreen() } returns Rect(100, 200, 500, 280)
+        setBoundsMock(passwordNode, 100, 200, 500, 280)
 
         val tree = serializer.serialize(rootNode)
 
@@ -202,7 +202,7 @@ class UITreeSerializerTest {
         every { child.childCount } returns 1
         every { child.getChild(0) } returns grandchild
         every { child.getChild(any<Int>()) } returns null
-        every { child.getBoundsInScreen() } returns Rect(0, 0, 100, 100)
+        setBoundsMock(child, 0, 0, 100, 100)
 
         every { grandchild.packageName } returns "com.example.app"
         every { grandchild.className } returns "android.widget.TextView"
@@ -222,7 +222,7 @@ class UITreeSerializerTest {
         every { grandchild.isCheckable } returns false
         every { grandchild.childCount } returns 0
         every { grandchild.getChild(any<Int>()) } returns null
-        every { grandchild.getBoundsInScreen() } returns Rect(0, 100, 200, 200)
+        setBoundsMock(grandchild, 0, 100, 200, 200)
 
         val tree = serializer.serialize(rootNode)
 
@@ -258,7 +258,7 @@ class UITreeSerializerTest {
         every { buttonNode.isCheckable } returns false
         every { buttonNode.childCount } returns 0
         every { buttonNode.getChild(any<Int>()) } returns null
-        every { buttonNode.getBoundsInScreen() } returns Rect(50, 50, 150, 100)
+        setBoundsMock(buttonNode, 50, 50, 150, 100)
 
         val tree = serializer.serialize(rootNode)
         val json = serializer.toJson(tree)
@@ -295,7 +295,7 @@ class UITreeSerializerTest {
         every { imageNode.isCheckable } returns false
         every { imageNode.childCount } returns 0
         every { imageNode.getChild(any<Int>()) } returns null
-        every { imageNode.getBoundsInScreen() } returns Rect(0, 0, 48, 48)
+        setBoundsMock(imageNode, 0, 0, 48, 48)
 
         val tree = serializer.serialize(rootNode)
 
@@ -303,8 +303,6 @@ class UITreeSerializerTest {
         assertEquals("Profile picture", tree.elements[0].contentDescription)
         assertFalse(tree.elements[0].isClickable)
     }
-
-    // Helper methods
 
     private fun setupRootNode(rootNode: AccessibilityNodeInfo) {
         every { rootNode.packageName } returns "com.example.app"
@@ -323,7 +321,7 @@ class UITreeSerializerTest {
         every { rootNode.isEnabled } returns true
         every { rootNode.isFocused } returns false
         every { rootNode.isCheckable } returns false
-        every { rootNode.getBoundsInScreen() } returns Rect(0, 0, 1080, 1920)
+        setBoundsMock(rootNode, 0, 0, 1080, 1920)
         every { rootNode.getChild(any<Int>()) } returns null
     }
 
@@ -347,7 +345,13 @@ class UITreeSerializerTest {
         every { node.isCheckable } returns false
         every { node.childCount } returns 0
         every { node.getChild(any<Int>()) } returns null
-        every { node.getBoundsInScreen() } returns Rect(0, 0, 100, 50)
+        setBoundsMock(node, 0, 0, 100, 50)
         return node
+    }
+
+    private fun setBoundsMock(node: AccessibilityNodeInfo, left: Int, top: Int, right: Int, bottom: Int) {
+        every { node.getBoundsInScreen(any()) } answers { call ->
+            (call.args[0] as Rect).set(left, top, right, bottom)
+        }
     }
 }

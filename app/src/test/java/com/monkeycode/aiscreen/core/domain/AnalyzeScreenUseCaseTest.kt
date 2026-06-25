@@ -47,7 +47,7 @@ class AnalyzeScreenUseCaseTest {
 
     @Test
     fun should_return_failure_when_config_not_set() = runBlocking {
-        val uiTree = SerializedUITree("com.test", emptyList(), 1000)
+        val uiTree = SerializedUITree(packageName = "com.test", elements = emptyList(), timestamp = 1000)
         every { readUITreeUseCase.invoke() } returns Result.success(uiTree)
         every { settingsRepository.llmConfig } returns flowOf(null)
 
@@ -59,7 +59,7 @@ class AnalyzeScreenUseCaseTest {
 
     @Test
     fun should_call_llm_repository_with_filtered_tree() = runBlocking {
-        val uiTree = SerializedUITree("com.test", emptyList(), 1000)
+        val uiTree = SerializedUITree(packageName = "com.test", elements = emptyList(), timestamp = 1000)
         val config = LLMConfig("url", "key", "model")
         val expectedResult = AnalysisResult("desc", emptyList(), "suggestion", emptyList())
 
