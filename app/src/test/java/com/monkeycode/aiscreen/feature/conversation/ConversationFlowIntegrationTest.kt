@@ -9,7 +9,6 @@ import com.monkeycode.aiscreen.core.domain.ManageConversationUseCase
 import com.monkeycode.aiscreen.core.domain.ProcessVoiceInputUseCase
 import com.monkeycode.aiscreen.core.domain.ReadUITreeUseCase
 import com.monkeycode.aiscreen.core.domain.AccessibilityServiceBridge
-import com.monkeycode.aiscreen.core.data.datastore.SettingsDataStore
 import com.monkeycode.aiscreen.core.model.Action
 import com.monkeycode.aiscreen.core.model.AnalysisResult
 import com.monkeycode.aiscreen.core.model.Conversation
@@ -39,7 +38,6 @@ class ConversationFlowIntegrationTest {
     @Test
     fun fullConversationFlow_analyzeAndExecuteActions() = runTest {
         val bridge = mockk<AccessibilityServiceBridge>()
-        val settingsDataStore = mockk<SettingsDataStore>()
         val llmRepository = mockk<LLMRepository>()
         val uiTreeSerializer = mockk<com.monkeycode.aiscreen.core.serializer.UITreeSerializer>()
 
@@ -85,22 +83,11 @@ class ConversationFlowIntegrationTest {
 
         every { bridge.isEnabled() } returns true
         every { bridge.readUITree() } returns sampleTree
-        every { bridge.performAction(any()) } returns ActionResult.Success(0, "ok")
+        coEvery { bridge.performAction(any()) } returns ActionResult.Success(0, "ok")
         every { uiTreeSerializer.serialize(any()) } returns sampleTree
-        every { settingsDataStore.llmConfig } returns flowOf(
-            com.monkeycode.aiscreen.core.model.LLMConfig(
-                baseUrl = "https://api.openai.com",
-                apiKey = "sk-test",
-                modelName = "gpt-4o"
-            )
-        )
-        every { settingsDataStore.operationMode } returns flowOf(OperationMode.AUTONOMOUS)
-        coEvery { llmRepository.analyze(any(), any(), any(), any()) } returns Result.success(sampleResult)
 
         val readUITree = ReadUITreeUseCase(bridge, uiTreeSerializer)
         val filterSensitive = FilterSensitiveNodesUseCase()
-        val analyzeScreen = AnalyzeScreenUseCase(readUITree, filterSensitive, llmRepository, settingsDataStore)
-        val executeAction = ExecuteActionUseCase(bridge)
 
         val settingsRepository = mockk<SettingsRepository>()
         every { settingsRepository.operationMode } returns flowOf(OperationMode.AUTONOMOUS)
@@ -112,14 +99,20 @@ class ConversationFlowIntegrationTest {
             )
         )
 
+        coEvery { llmRepository.analyze(any(), any(), any(), any()) } returns Result.success(sampleResult)
+
+        val analyzeScreen = AnalyzeScreenUseCase(readUITree, filterSensitive, llmRepository, settingsRepository)
+        val executeAction = ExecuteActionUseCase(bridge)
+
         val manageConversation = mockk<ManageConversationUseCase>()
-        every { manageConversation.createConversation(any()) } returns Conversation(
+        coEvery { manageConversation.createConversation(any()) } returns Conversation(
             id = "1",
             title = "登录页面",
             createdAt = System.currentTimeMillis(),
             updatedAt = System.currentTimeMillis(),
             messages = emptyList()
         )
+        coEvery { manageConversation.appendMessage(any(), any()) } returns Unit
 
         val voiceInput = mockk<ProcessVoiceInputUseCase>()
 

@@ -12,6 +12,7 @@ import android.graphics.PixelFormat
 import android.os.Build
 import android.os.IBinder
 import android.Manifest
+import android.annotation.SuppressLint
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -213,6 +214,7 @@ class OverlayService : Service() {
         sendBroadcast(intent)
     }
 
+    @SuppressLint("NotificationPermission")
     private fun toggleVisibility() {
         if (isExpanded) {
             windowManager.removeView(floatView)
