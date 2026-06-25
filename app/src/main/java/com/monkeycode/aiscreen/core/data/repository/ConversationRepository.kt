@@ -8,6 +8,7 @@ import com.monkeycode.aiscreen.core.model.Conversation
 import com.monkeycode.aiscreen.core.model.ConversationSummary
 import com.monkeycode.aiscreen.core.model.Message
 import com.monkeycode.aiscreen.core.model.MessageRole
+import com.monkeycode.aiscreen.core.model.AnalysisResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -95,7 +96,7 @@ class ConversationRepository @Inject constructor(
             conversationId = conversationId,
             role = role.name,
             content = content,
-            analysisResultJson = analysisResult?.let { kotlinx.serialization.json.Json.encodeToString(it) },
+            analysisResultJson = analysisResult?.let { kotlinx.serialization.json.Json.encodeToString(AnalysisResult.serializer(), it) },
             timestamp = timestamp
         )
     }

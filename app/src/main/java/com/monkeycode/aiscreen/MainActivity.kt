@@ -75,7 +75,7 @@ class MainActivity : ComponentActivity() {
         checkStatuses()
 
         setContent {
-            val isNetworkOnline by networkMonitor.isOnline.collectAsStateWithLifecycle(
+            val isNetworkOnline by networkMonitor.isConnected.collectAsStateWithLifecycle(
                 initialValue = true
             )
 

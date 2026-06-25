@@ -134,7 +134,7 @@ class ConversationViewModel @Inject constructor(
                 )
             }
 
-            val result = analyzeScreenUseCase(userPrompt = text, history = history)
+            val result = analyzeScreenUseCase(userPrompt = text, conversationHistory = history)
 
             result.fold(
                 onSuccess = { analysis ->

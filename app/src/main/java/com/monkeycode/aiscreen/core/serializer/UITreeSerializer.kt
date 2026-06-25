@@ -76,7 +76,8 @@ class UITreeSerializer {
     }
 
     private fun createUIElement(node: AccessibilityNodeInfo, index: Int, depth: Int): UIElement {
-        val bounds = node.getBoundsInScreen()
+        val bounds = android.graphics.Rect()
+        node.getBoundsInScreen(bounds)
 
         return UIElement(
             index = index,
