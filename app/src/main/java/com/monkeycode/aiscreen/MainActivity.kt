@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -69,7 +70,8 @@ class MainActivity : ComponentActivity() {
             IntentFilter().apply {
                 addAction(OverlayService.ACTION_ANALYZE)
                 addAction(OverlayService.ACTION_VOICE_INPUT)
-            }
+            },
+            ContextCompat.RECEIVER_NOT_EXPORTED
         )
 
         checkStatuses()
