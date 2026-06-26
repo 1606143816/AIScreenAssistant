@@ -154,6 +154,7 @@ class ConversationFlowIntegrationTest {
         val settingsRepository = mockk<SettingsRepository>()
         every { settingsRepository.operationMode } returns flowOf(OperationMode.SUGGESTION)
         every { settingsRepository.llmConfig } returns flowOf(null)
+        coEvery { settingsRepository.saveOperationMode(any()) } returns Unit
 
         val viewModel = ConversationViewModel(
             analyzeScreenUseCase = mockk(),

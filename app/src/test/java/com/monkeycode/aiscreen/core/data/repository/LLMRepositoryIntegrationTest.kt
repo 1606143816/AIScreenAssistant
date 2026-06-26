@@ -49,31 +49,12 @@ class LLMRepositoryIntegrationTest {
 
     @Test
     fun analyze_returnsResult_whenServerResponds200() = runBlocking {
-        val sampleResponse = """
-            {
-                "screenDescription": "微信聊天界面",
-                "keyElements": [
-                    {"elementIndex": 0, "label": "输入框", "description": "文本输入区域"}
-                ],
-                "suggestionText": "您可以点击输入框开始输入文字",
-                "actions": [
-                    {"type": "CLICK", "elementIndex": 0}
-                ]
-            }
-        """.trimIndent()
+        val innerJson = """{"screenDescription":"微信聊天界面","keyElements":[{"elementIndex":0,"label":"输入框","description":"文本输入区域"}],"suggestionText":"您可以点击输入框开始输入文字","actions":[{"type":"CLICK","elementIndex":0}]}"""
 
         mockWebServer.enqueue(
             MockResponse()
                 .setResponseCode(200)
-                .setBody("""
-                    {
-                        "choices": [{
-                            "message": {
-                                "content": ${"\""}${escapeJson(sampleResponse)}${"\""}
-                            }
-                        }]
-                    }
-                """.trimIndent())
+                .setBody("""{"choices":[{"message":{"content":"${escapeJson(innerJson)}"}}]}""")
         )
 
         llmRepository = createRepository()
@@ -148,15 +129,7 @@ class LLMRepositoryIntegrationTest {
                 MockResponse().setResponseCode(500)
             )
         }
-        val successResponse = """
-            {
-                "choices": [{
-                    "message": {
-                        "content": {"screenDescription":"ok","keyElements":[],"suggestionText":"test","actions":[]}
-                    }
-                }]
-            }
-        """.trimIndent()
+        val successResponse = """{"choices":[{"message":{"content":"{\"screenDescription\":\"ok\",\"keyElements\":[],\"suggestionText\":\"test\",\"actions\":[]}"}}]}"""
         mockWebServer.enqueue(
             MockResponse()
                 .setResponseCode(200)

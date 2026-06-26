@@ -51,7 +51,7 @@ class UITreeSerializer @Inject constructor() {
         val childCount = node.childCount
         for (i in 0 until childCount) {
             val child = node.getChild(i) ?: continue
-            traverseNode(child, elements, depth + 1, shouldIncludeRoot = true)
+            traverseNode(child, elements, depth + 1, shouldIncludeRoot = false)
         }
     }
 
