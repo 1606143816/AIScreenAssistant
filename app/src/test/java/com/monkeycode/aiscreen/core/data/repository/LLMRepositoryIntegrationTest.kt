@@ -42,6 +42,7 @@ class LLMRepositoryIntegrationTest {
         llmApiService = LLMApiService(okHttpClient)
         val mockNetworkMonitor = mockk<NetworkMonitor> {
             every { isConnected } returns flowOf(true)
+            every { isCurrentlyConnected() } returns true
         }
         return LLMRepository(llmApiService, mockNetworkMonitor)
     }

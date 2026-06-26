@@ -37,7 +37,7 @@ class ExecuteActionUseCase @Inject constructor(
                     is ActionResult.Success -> consecutiveFailures = 0
                     is ActionResult.Failure -> consecutiveFailures++
                     is ActionResult.NeedsConfirmation -> {
-                        emit(result)
+                        consecutiveFailures = 0
                     }
                     is ActionResult.Skipped -> {}
                 }

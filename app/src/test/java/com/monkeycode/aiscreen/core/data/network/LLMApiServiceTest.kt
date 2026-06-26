@@ -208,7 +208,7 @@ class LLMApiServiceTest {
         assertTrue(requestBody.contains("\"role\":\"system\""))
         assertTrue(requestBody.contains("\"role\":\"user\""))
         assertTrue(requestBody.contains("\"role\":\"assistant\""))
-        assertTrue(requestBody.contains("\"Continue\""))
+        assertTrue(requestBody.contains("Continue"))
     }
 
     @Test

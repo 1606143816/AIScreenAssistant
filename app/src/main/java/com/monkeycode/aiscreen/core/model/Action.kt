@@ -5,25 +5,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class Action {
-    abstract val type: String
 
     @Serializable
     @SerialName("CLICK")
-    data class Click(val elementIndex: Int) : Action() {
-        override val type: String = "CLICK"
-    }
+    data class Click(val elementIndex: Int) : Action()
 
     @Serializable
     @SerialName("LONG_CLICK")
-    data class LongClick(val elementIndex: Int) : Action() {
-        override val type: String = "LONG_CLICK"
-    }
+    data class LongClick(val elementIndex: Int) : Action()
 
     @Serializable
     @SerialName("INPUT_TEXT")
-    data class InputText(val elementIndex: Int, val text: String) : Action() {
-        override val type: String = "INPUT_TEXT"
-    }
+    data class InputText(val elementIndex: Int, val text: String) : Action()
 
     @Serializable
     @SerialName("SWIPE")
@@ -33,33 +26,23 @@ sealed class Action {
         val endX: Int,
         val endY: Int,
         val duration: Long = 300
-    ) : Action() {
-        override val type: String = "SWIPE"
-    }
+    ) : Action()
 
     @Serializable
     @SerialName("PRESS_BACK")
-    object PressBack : Action() {
-        override val type: String = "PRESS_BACK"
-    }
+    object PressBack : Action()
 
     @Serializable
     @SerialName("SCROLL_FORWARD")
-    data class ScrollForward(val elementIndex: Int) : Action() {
-        override val type: String = "SCROLL_FORWARD"
-    }
+    data class ScrollForward(val elementIndex: Int) : Action()
 
     @Serializable
     @SerialName("SCROLL_BACKWARD")
-    data class ScrollBackward(val elementIndex: Int) : Action() {
-        override val type: String = "SCROLL_BACKWARD"
-    }
+    data class ScrollBackward(val elementIndex: Int) : Action()
 
     @Serializable
     @SerialName("OPEN_APP")
-    data class OpenApp(val packageName: String) : Action() {
-        override val type: String = "OPEN_APP"
-    }
+    data class OpenApp(val packageName: String) : Action()
 }
 
 sealed class ActionResult {

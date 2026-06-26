@@ -350,8 +350,8 @@ class UITreeSerializerTest {
     }
 
     private fun setBoundsMock(node: AccessibilityNodeInfo, left: Int, top: Int, right: Int, bottom: Int) {
-        every { node.getBoundsInScreen(any()) } answers { call ->
-            (call.invocation.args[0] as Rect).set(left, top, right, bottom)
+        every { node.getBoundsInScreen(any()) } answers {
+            firstArg<Rect>().set(left, top, right, bottom)
         }
     }
 }

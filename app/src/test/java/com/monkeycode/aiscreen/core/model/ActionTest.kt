@@ -109,7 +109,7 @@ class ActionTest {
         for (action in actions) {
             val serialized = json.encodeToString<Action>(action)
             val deserialized = json.decodeFromString<Action>(serialized)
-            assertEquals(action.type, deserialized.type)
+            assertEquals(action::class, deserialized::class)
         }
     }
 }
