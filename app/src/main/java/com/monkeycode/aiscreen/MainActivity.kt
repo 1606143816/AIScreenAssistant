@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -22,6 +23,7 @@ import com.monkeycode.aiscreen.core.data.repository.SettingsRepository
 import com.monkeycode.aiscreen.service.accessibility.AIAccessibilityService
 import com.monkeycode.aiscreen.service.overlay.OverlayService
 import com.monkeycode.aiscreen.ui.navigation.AppNavGraph
+import com.monkeycode.aiscreen.ui.navigation.Screen
 import com.monkeycode.aiscreen.ui.theme.AIScreenAssistantTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
