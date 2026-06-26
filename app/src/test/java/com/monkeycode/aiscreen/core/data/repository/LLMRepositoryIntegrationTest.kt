@@ -11,7 +11,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -48,7 +48,7 @@ class LLMRepositoryIntegrationTest {
     }
 
     @Test
-    fun analyze_returnsResult_whenServerResponds200() = runTest {
+    fun analyze_returnsResult_whenServerResponds200() = runBlocking {
         val sampleResponse = """
             {
                 "screenDescription": "微信聊天界面",
@@ -96,7 +96,7 @@ class LLMRepositoryIntegrationTest {
     }
 
     @Test
-    fun analyze_returnsFailure_whenServerReturns401() = runTest {
+    fun analyze_returnsFailure_whenServerReturns401() = runBlocking {
         mockWebServer.enqueue(
             MockResponse()
                 .setResponseCode(401)
@@ -119,7 +119,7 @@ class LLMRepositoryIntegrationTest {
     }
 
     @Test
-    fun analyze_returnsFailure_whenServerReturns429() = runTest {
+    fun analyze_returnsFailure_whenServerReturns429() = runBlocking {
         mockWebServer.enqueue(
             MockResponse()
                 .setResponseCode(429)
@@ -142,7 +142,7 @@ class LLMRepositoryIntegrationTest {
     }
 
     @Test
-    fun analyze_retriesOnServerError() = runTest {
+    fun analyze_retriesOnServerError() = runBlocking {
         repeat(2) {
             mockWebServer.enqueue(
                 MockResponse().setResponseCode(500)

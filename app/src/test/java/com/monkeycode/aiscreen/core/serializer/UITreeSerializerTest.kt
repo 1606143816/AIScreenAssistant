@@ -4,7 +4,9 @@ import android.graphics.Rect
 import android.view.accessibility.AccessibilityNodeInfo
 import com.monkeycode.aiscreen.core.model.SerializedUITree
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.Runs
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -350,8 +352,6 @@ class UITreeSerializerTest {
     }
 
     private fun setBoundsMock(node: AccessibilityNodeInfo, left: Int, top: Int, right: Int, bottom: Int) {
-        every { node.getBoundsInScreen(any()) } answers {
-            firstArg<Rect>().set(left, top, right, bottom)
-        }
+        every { node.getBoundsInScreen(any()) } just Runs
     }
 }

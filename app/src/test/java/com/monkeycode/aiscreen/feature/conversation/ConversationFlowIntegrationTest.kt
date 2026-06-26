@@ -20,20 +20,31 @@ import com.monkeycode.aiscreen.core.model.ActionResult
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ConversationFlowIntegrationTest {
 
-    private val testDispatcher = StandardTestDispatcher()
-    private val testScope = TestScope(testDispatcher)
+    @Before
+    fun setUp() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+    }
 
     @Test
     fun fullConversationFlow_analyzeAndExecuteActions() = runTest {
@@ -129,8 +140,7 @@ class ConversationFlowIntegrationTest {
 
         viewModel.onEvent(ConversationEvent.SendMessage("帮我登录"))
 
-        testDispatcher.scheduler.advanceUntilIdle()
-        delay(100)
+        delay(200)
 
         val state = viewModel.uiState.value
         assertFalse(state.isAnalyzing)
@@ -156,8 +166,6 @@ class ConversationFlowIntegrationTest {
         assertEquals(OperationMode.SUGGESTION, viewModel.uiState.value.operationMode)
 
         viewModel.onEvent(ConversationEvent.ToggleMode)
-
-        testDispatcher.scheduler.advanceUntilIdle()
     }
 
     @Test
