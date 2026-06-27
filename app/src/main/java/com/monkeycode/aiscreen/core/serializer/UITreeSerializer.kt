@@ -23,7 +23,11 @@ class UITreeSerializer @Inject constructor() {
         val elements = mutableListOf<UIElement>()
         val timestamps = System.currentTimeMillis()
 
-        traverseNode(rootNode, elements, depth = 0, shouldIncludeRoot = false)
+        val childCount = rootNode.childCount
+        for (i in 0 until childCount) {
+            val child = rootNode.getChild(i) ?: continue
+            traverseNode(child, elements, depth = 1, shouldIncludeRoot = false)
+        }
 
         return SerializedUITree(
             packageName = packageName,

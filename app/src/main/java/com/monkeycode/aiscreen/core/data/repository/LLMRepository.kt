@@ -86,7 +86,8 @@ class LLMRepository @Inject constructor(
             if (result.isSuccess) return result
 
             val error = result.exceptionOrNull()
-            if (error is LLMException.AuthenticationError || error is LLMException.ParseError) {
+            if (error is LLMException.AuthenticationError || error is LLMException.ParseError
+                || error is LLMException.RateLimitError) {
                 return result
             }
 
