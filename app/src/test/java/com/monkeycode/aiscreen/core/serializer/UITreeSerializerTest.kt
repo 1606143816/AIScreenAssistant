@@ -202,8 +202,8 @@ class UITreeSerializerTest {
         every { child.isFocused } returns false
         every { child.isCheckable } returns false
         every { child.childCount } returns 1
-        every { child.getChild(0) } returns grandchild
         every { child.getChild(any<Int>()) } returns null
+        every { child.getChild(0) } returns grandchild
         setBoundsMock(child, 0, 0, 100, 100)
 
         every { grandchild.packageName } returns "com.example.app"

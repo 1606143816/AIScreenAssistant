@@ -52,7 +52,7 @@ class LLMRepositoryIntegrationTest {
     @Test
     fun analyze_returnsResult_whenServerResponds200() = runBlocking {
         val contentJson = """{"screenDescription":"微信聊天界面","keyElements":[{"elementIndex":0,"label":"输入框","description":"文本输入区域"}],"suggestionText":"您可以点击输入框开始输入文字","actions":[{"type":"CLICK","elementIndex":0}]}"""
-        val body = """{"choices":[{"message":{"content":${json.encodeToString<String>(contentJson)}}}]}"""
+        val body = """{"choices":[{"message":{"role":"assistant","content":${json.encodeToString<String>(contentJson)}}}]}"""
 
         mockWebServer.enqueue(
             MockResponse()
@@ -133,7 +133,7 @@ class LLMRepositoryIntegrationTest {
             )
         }
         val contentJson = """{"screenDescription":"ok","keyElements":[],"suggestionText":"test","actions":[]}"""
-        val successResponse = """{"choices":[{"message":{"content":${json.encodeToString<String>(contentJson)}}}]}"""
+        val successResponse = """{"choices":[{"message":{"role":"assistant","content":${json.encodeToString<String>(contentJson)}}}]}"""
         mockWebServer.enqueue(
             MockResponse()
                 .setResponseCode(200)
